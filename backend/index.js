@@ -2,6 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const app = express();
+const cors = require("cors");
 
 const config = require("./config");
 const Wish = require("./wish");
@@ -14,6 +15,7 @@ mongoose.connect(config.mongoUrl, {
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cors( {origin: "http://localhost:3000" }));
 
 
 app.post("/join", (req, res, next) => {
