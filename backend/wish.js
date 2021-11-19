@@ -7,6 +7,6 @@ const wish = new mongoose.Schema({
   unwish: String,
   participating: Boolean,
   circle: String
-});
+},{ timestamps: true });
 
 module.exports = mongoose.model("Wish", wish);

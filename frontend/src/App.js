@@ -18,10 +18,10 @@ function App() {
       setError("Nimi ja osallistuminen vaaditaan");
       return;
     }
+    const address = "API_ADDRESS";
 
     setError("")
-    
-    fetch('http://localhost:5000/join', {
+    fetch( address + '/join', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
