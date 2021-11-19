@@ -15,7 +15,7 @@ mongoose.connect(config.mongoUrl, {
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(cors( {origin: config.clientAddress }));
+//app.use(cors( {origin: config.clientAddress }));
 
 
 app.post("/join", (req, res, next) => {
