@@ -5,7 +5,8 @@ const app = express();
 const cors = require("cors");
 
 const config = require("./config");
-const Wish = require("./wish");
+const Wish = require("./schemas/wish");
+const Result = require("./schemas/result")
 
 mongoose.connect(config.mongoUrl, { 
   useNewUrlParser: true, useUnifiedTopology: true, }, () => {
@@ -36,6 +37,54 @@ app.post("/join", (req, res, next) => {
   res.json({ status: 'ok' });
 
 });
+
+app.get("/results/:id", (req, res, next) => {
+
+  console.log("Request to get results")
+  Result.findOne({identifier: req.params.id}, function(err, obj) {    
+    if (err) {
+      res.json({ status: 'error' })
+    } else {
+      console.log(obj.name)
+      res.json({ 
+       status: 'ok',
+       result: {
+         name: obj.name,
+         target: obj.target,
+         wish: obj.wish,
+         unwish: obj.unwish
+       }
+      });
+    }            
+});
+});
+
+
+app.get("/addResult/:identifier/:name/:target", (req, res, next) => {
+
+  console.log("debv")
+  console.log(req.params.name)
+  console.log(req.params.target)
+
+  Wish.findOne({name: req.params.target}, function(err, obj) {    
+    if (err) {
+      res.json({ status: 'error' })
+    } else {
+      const newResult = new Result({
+        identifier: req.params.identifier,
+        name: req.params.name,
+        target: obj.name,
+        wish: obj.wish,
+        unwish: obj.unwish,
+      });
+      newResult.save();
+      res.json({ status: 'ok' });
+    }            
+})
+
+  
+});
+
 
 
 app.listen(config.port, () => {
