@@ -45,6 +45,11 @@ app.get("/results/:id", (req, res, next) => {
     if (err) {
       res.json({ status: 'error' })
     } else {
+      if (obj === null) {
+        res.json({ status: 'error' })
+      } else {
+
+      
       console.log(obj.name)
       res.json({ 
        status: 'ok',
@@ -55,6 +60,7 @@ app.get("/results/:id", (req, res, next) => {
          unwish: obj.unwish
        }
       });
+    }
     }            
 });
 });
