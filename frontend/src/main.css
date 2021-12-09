@@ -138,5 +138,7 @@ button {
     display: flex;
     flex-direction: column;
     align-items: left;
-    text-align: justify;
+    text-align: center;
+    margin-left: 10px;
+    margin-right: 10px;
 }

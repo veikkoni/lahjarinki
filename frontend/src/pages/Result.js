@@ -50,7 +50,7 @@ if (!loading){
             <p>Sinulle arvottu pari on <b>{result.target}</b></p>
           </div>
           <div className="result-element">
-            <p>Hänen toiveensa: "{result.wish}"</p>
+            <p>Hänen toiveensa: <br/>"{result.wish}"</p>
           </div>
           <div className="result-element">
             <p>Budjetti noin 20€</p>
