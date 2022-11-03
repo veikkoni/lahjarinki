@@ -4,6 +4,8 @@ services:
     image: lahjarinki/frontend:${LAHJARINKI_TAG}
     container_name: lahjarinki_frontend
     build: ./frontend/
+    networks:
+      - internal
     env_file:
       - .env
     ports:
@@ -12,6 +14,8 @@ services:
   backend:
     image: lahjarinki/backend:${LAHJARINKI_TAG}
     container_name: lahjarinki_backend
+    networks:
+      - internal
     build: ./backend/
     env_file:
       - .env
