@@ -17,3 +17,6 @@ services:
       - lahjarinki-internal
     env_file:
       - .env
+
+networks:
+  lahjarinki-internal:
