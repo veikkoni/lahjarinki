@@ -1,14 +1,13 @@
 import React, { useState } from "react";
 
 function Wish() {
-
   const [name, setName] = useState("");
   const [wish, setWish] = useState("");
   const [unwish, setUnwish] = useState("");
   const [participating, setParticipating] = useState();
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState("");
-  const circle = "1"
+  const circle = "1";
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -17,14 +16,14 @@ function Wish() {
       setError("Nimi ja osallistuminen vaaditaan");
       return;
     }
-    const address = "API_ADDRESS"
+    const address = "API_ADDRESS";
 
-    setError("")
-    fetch( address + '/join', {
-      method: 'POST',
+    setError("");
+    fetch(address + "/join", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
+        "Content-Type": "application/json",
+        Accept: "application/json",
       },
       body: JSON.stringify({
         name: name,
@@ -32,16 +31,18 @@ function Wish() {
         unwish: unwish,
         participating: participating,
         circle: circle,
+      }),
+    })
+      .catch((err) => {
+        console.log(err);
+        alert(err);
       })
-    }).catch((err) => {
-      console.log(err);
-      alert(err);
-    }).then((res) => {
-      setSubmitted(true);
+      .then((res) => {
+        setSubmitted(true);
       });
-  }
+  };
 
-  return ( !submitted ?
+  return !submitted ? (
     <div className="main-content">
       <form className="join-form">
         <div className="form-header">
@@ -54,11 +55,9 @@ function Wish() {
             </p>
           </div>
           <div className="form-element">
-            <label>
-              Nimi: *
-            </label>
+            <label>Nimi: *</label>
             <input
-              type="text" 
+              type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
             />
@@ -89,51 +88,48 @@ function Wish() {
             </div>
           </div>
 
-        {participating &&
-          <>
-            <div className="form-element">
-              <p>
-                Täytä myös toive ja kerro mitä et mielellään haluaisi.
-                Tämän täyttäminen ei ole pakollista, mutta helpottaa hyvin paljon lahjan ostamista.
-              </p>
-            </div>
-            <div className="form-element">
-              <label>
-                Mitä haluaisit:
-              </label>
-              <input
-                  type="text" 
+          {participating && (
+            <>
+              <div className="form-element">
+                <p>
+                  Täytä myös toive ja kerro mitä et mielellään haluaisi. Tämän
+                  täyttäminen ei ole pakollista, mutta helpottaa hyvin paljon
+                  lahjan ostamista.
+                </p>
+              </div>
+              <div className="form-element">
+                <label>Mitä haluaisit:</label>
+                <input
+                  type="text"
                   value={wish}
                   onChange={(e) => setWish(e.target.value)}
                 />
-            </div>
-            <div className="form-element">
-              <label>
-                Mitä et toivoisi:
-              </label>
-              <input
-                type="text" 
-                value={unwish}
-                onChange={(e) => setUnwish(e.target.value)}
-              />
-            </div>
-          </>
-        }
+              </div>
+              <div className="form-element">
+                <label>Mitä et toivoisi:</label>
+                <input
+                  type="text"
+                  value={unwish}
+                  onChange={(e) => setUnwish(e.target.value)}
+                />
+              </div>
+            </>
+          )}
 
-        {error != "" &&
-          <div className="form-element error">
-            <p>{error}</p>
-          </div>
-        }
+          {error != "" && (
+            <div className="form-element error">
+              <p>{error}</p>
+            </div>
+          )}
 
-        <button type="submit" onClick={handleSubmit}>Lähetä</button>
-      </div>
-    </form>
-    <div className="footer">
-      lahjarinki.fi
+          <button type="submit" onClick={handleSubmit}>
+            Lähetä
+          </button>
+        </div>
+      </form>
+      <div className="footer">lahjarinki.fi</div>
     </div>
-  </div>
-    : 
+  ) : (
     <div className="main-content">
       <form className="join-form">
         <div className="form-header">
@@ -143,16 +139,19 @@ function Wish() {
           <div className="form-element">
             <p>Kiitos vastauksesta. Parit ilmoitetaan myöhemmin.</p>
           </div>
-          <button type="submit" onClick={() => {setSubmitted(false)}}>Vastaa uudestaan</button>
+          <button
+            type="submit"
+            onClick={() => {
+              setSubmitted(false);
+            }}
+          >
+            Vastaa uudestaan
+          </button>
         </div>
       </form>
-      <div className="footer">
-        lahjarinki.fi
-      </div>
+      <div className="footer">lahjarinki.fi</div>
     </div>
-
-  )
-  
+  );
 }
 
 export default Wish;
