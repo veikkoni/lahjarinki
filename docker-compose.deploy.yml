@@ -20,3 +20,4 @@ services:
 
 networks:
   lahjarinki-internal:
+    driver: local
