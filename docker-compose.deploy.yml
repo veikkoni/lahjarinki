@@ -4,7 +4,7 @@ services:
     image: veikkoni/lahjarinki/frontend:${LAHJARINKI_VERSION}
     build: ./frontend/
     networks:
-      - lahjarinki-internal
+      - internal
     env_file:
       - .env
     ports:
@@ -14,10 +14,9 @@ services:
     image: lahjarinki/backend:${LAHJARINKI_VERSION}
     build: ./backend/
     networks:
-      - lahjarinki-internal
+      - internal
     env_file:
       - .env
 
 networks:
-  lahjarinki-internal:
-    driver: local
+  internal:

@@ -16,7 +16,7 @@ function Wish() {
       setError("Nimi ja osallistuminen vaaditaan");
       return;
     }
-    const address = "API_ADDRESS";
+    const address = "/api";
 
     setError("");
     fetch(address + "/join", {

@@ -5,7 +5,7 @@ function Result() {
   let { id } = useParams();
 
   useEffect(() => {
-    const address = "API_ADDRESS";
+    const address = "/api";
 
     fetch(address + "/results/" + id, {
       method: "GET",

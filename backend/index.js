@@ -13,7 +13,7 @@ app.use(cors());
 
 var db = new JsonDB(new Config("data", true, true, "/"));
 
-app.post("/join", (req, res, next) => {
+app.post("/api/join", (req, res, next) => {
   console.log("Request to post login");
   if (req.body.name && req.body.participating && req.body.circle) {
     console.log(req.body.name);
@@ -34,7 +34,7 @@ app.post("/join", (req, res, next) => {
   }
 });
 
-app.get("/results/:id", async (req, res, next) => {
+app.get("/api/results/:id", async (req, res, next) => {
   console.log("Request to get results");
   if (req.params.id) {
     console.log(req.params.id);
@@ -49,7 +49,7 @@ app.get("/results/:id", async (req, res, next) => {
 });
 
 app.get(
-  "/addResult/:identifier/:name/:target/:password",
+  "/api/addResult/:identifier/:name/:target/:password",
   async (req, res, next) => {
     console.log("Request to add result");
     if (req.params.password == config.addResultPassword) {
