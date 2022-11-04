@@ -11,7 +11,7 @@ services:
       - "${LAHJARINKI_PORT}:80"
 
   backend:
-    image: lahjarinki/backend:${LAHJARINKI_VERSION}
+    image: veikkoni/lahjarinki/backend:${LAHJARINKI_VERSION}
     build: ./backend/
     networks:
       - internal
