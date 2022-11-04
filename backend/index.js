@@ -1,90 +1,88 @@
 const express = require("express");
-const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const app = express();
 const cors = require("cors");
+const JsonDB = require("node-json-db").JsonDB;
+const Config = require("node-json-db/dist/lib/JsonDBConfig").Config;
 
 const config = require("./config");
-const Wish = require("./schemas/wish");
-const Result = require("./schemas/result");
-
-mongoose.connect(
-  config.mongoUrl,
-  {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  },
-  () => {
-    console.log("Mongoose connected");
-  }
-);
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
 
+var db = new JsonDB(new Config("data", true, true, "/"));
+
 app.post("/join", (req, res, next) => {
   console.log("Request to post login");
-  console.log(req.body);
+  if (req.body.name && req.body.participating && req.body.circle) {
+    console.log(req.body.name);
+    db.push("/wishes[]", {
+      name: req.body.name,
+      wish: req.body.wish,
+      unwish: req.body.unwish,
+      participating: req.body.participating,
+      circle: req.body.circle,
+      datetime: new Date(),
+    });
 
-  const newWish = new Wish({
-    name: req.body.name,
-    wish: req.body.wish,
-    unwish: req.body.unwish,
-    participating: req.body.participating,
-    circle: req.body.circle,
-  });
-
-  newWish.save();
-
-  res.json({ status: "ok" });
+    res.json({ status: "ok" });
+    console.log("ok");
+  } else {
+    res.json({ status: "error" });
+    console.log("error");
+  }
 });
 
-app.get("/results/:id", (req, res, next) => {
+app.get("/results/:id", async (req, res, next) => {
   console.log("Request to get results");
-  Result.findOne({ identifier: req.params.id }, function (err, obj) {
-    if (err) {
-      res.json({ status: "error" });
-    } else {
-      if (obj === null) {
-        res.json({ status: "error" });
-      } else {
-        console.log(obj.name);
-        res.json({
-          status: "ok",
-          result: {
-            name: obj.name,
-            target: obj.target,
-            wish: obj.wish,
-            unwish: obj.unwish,
-          },
+  if (req.params.id) {
+    console.log(req.params.id);
+    const results = await db.getData("/results");
+    const result = results.find((i) => i.identifier == req.params.id);
+    res.json(result || {});
+    console.log("ok");
+  } else {
+    res.json({ status: "false" });
+    console.log("error");
+  }
+});
+
+app.get(
+  "/addResult/:identifier/:name/:target/:password",
+  async (req, res, next) => {
+    console.log("Request to add result");
+    if (req.params.password == config.addResultPassword) {
+      const wishes = await db.getData("/wishes/");
+
+      const wish = wishes
+        .sort((x, y) => {
+          return new Date(x.timestamp) < new Date(y.timestamp) ? 1 : -1;
+        })
+        .find((i) => req.params.target.toLowerCase() == i.name.toLowerCase());
+
+      if (wish) {
+        db.push("/results[]", {
+          identifier: req.params.identifier,
+          name: req.params.name,
+          target: wish.name,
+          wish: wish.wish,
+          unwish: wish.unwish,
+          datetime: new Date(),
         });
+
+        res.json({ status: "ok" });
+        console.log("ok");
+      } else {
+        res.json({ status: "error" });
+        console.log("error");
       }
-    }
-  });
-});
-
-app.get("/addResult/:identifier/:name/:target", (req, res, next) => {
-  console.log("debv");
-  console.log(req.params.name);
-  console.log(req.params.target);
-
-  Wish.findOne({ name: req.params.target }, function (err, obj) {
-    if (err) {
-      res.json({ status: "error" });
     } else {
-      const newResult = new Result({
-        identifier: req.params.identifier,
-        name: req.params.name,
-        target: obj.name,
-        wish: obj.wish,
-        unwish: obj.unwish,
-      });
-      newResult.save();
-      res.json({ status: "ok" });
+      res.json({ status: "auth error" });
+      console.log("auth error");
     }
-  });
-});
+  }
+);
 
 app.listen(config.port, () => {
   console.log("Server running");

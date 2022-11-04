@@ -1,9 +1,9 @@
-const mongoUrl = process.env.MONGODB_URL;
-const port = process.env.API_PORT || 80;
+const port = process.env.API_PORT || 3000;
 const clientAddress = process.env.CLIENT_ADDRESS;
+const addResultPassword = process.env.ADD_RESULT_PASSWORD;
 
 module.exports = {
-  mongoUrl: mongoUrl,
   port: port,
   clientAddress: clientAddress,
+  addResultPassword: addResultPassword,
 };
