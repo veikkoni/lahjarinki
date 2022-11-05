@@ -1,18 +1,19 @@
 version: "3"
 services:
   frontend:
-    image: veikkoni/lahjarinki/frontend:${LAHJARINKI_VERSION}
+    image: veikkoni/lahjarinki/frontend:dev
     build: ./frontend/
     networks:
       - internal
     ports:
-      - "${LAHJARINKI_PORT}:80"
+      - "8080:80"
 
   backend:
-    image: veikkoni/lahjarinki/backend:${LAHJARINKI_VERSION}
+    image: veikkoni/lahjarinki/backend:dev
     build: ./backend/
     networks:
       - internal
 
 networks:
   internal:
+# Add local mounts

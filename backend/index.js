@@ -11,7 +11,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
 
-var db = new JsonDB(new Config("data", true, true, "/"));
+var db = new JsonDB(new Config("./data/data", true, true, "/"));
 
 app.post("/api/join", (req, res, next) => {
   console.log("Request to post login");
